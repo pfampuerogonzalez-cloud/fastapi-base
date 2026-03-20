@@ -7,6 +7,7 @@ def buscar_noticias(query):
 
     params = {
         "q":query,
+        "language":"es",
         "apiKey":"aa7575b28a444037859696a6db42856c"
     }
 

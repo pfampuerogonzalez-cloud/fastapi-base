@@ -1,13 +1,13 @@
 from fastapi import FastAPI
+from db import conectar_db
 from llamar_api import buscar_noticias
 from noticias_a_db import guardar_noticias
-
 
 
 app = FastAPI()
 
 
-@app.get("/listo")
+@app.get("/")
 def home():
     return {"status": "ok", "mensaje": "API funcionando 🚀"}
 
@@ -25,6 +25,32 @@ def  obtener_noticias(query: str):
         "mensaje":"noticias agregadas",
         "cantidad": guardar
     }
+
+@app.get("/listar_desde_db")
+def listar_noticias():
+    conn = conectar_db()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT titulo, descripcion FROM noticias")
+
+    noticias = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    news = []
+    for n in noticias:
+        noticias.append({
+            "titulo": n[0],
+            "description":n[1]
+        
+        })
+        return noticias
+    
+
+    
+
+
+
 
 
 
